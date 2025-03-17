@@ -19,6 +19,10 @@ namespace ListaZakupow
         public MainWindow()
         {
             InitializeComponent();
+            var userService = new UserService();
+            userService.AddUser("Jan Kowalski", "jan@wp.pl");
         }
+
     }
+
 }
