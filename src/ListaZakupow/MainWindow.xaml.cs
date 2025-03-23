@@ -8,19 +8,118 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ListaZakupow;
 
 namespace ListaZakupow
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    
     public partial class MainWindow : Window
     {
+        private readonly UserService _userService;
+        private readonly ShoppingListService _shoppingListService;
+        private int _selectedUserId;
+
         public MainWindow()
         {
             InitializeComponent();
-            var userService = new UserService();
-            userService.AddUser("Jan Kowalski", "jan@wp.pl");
+            _userService = new UserService();
+            _shoppingListService = new ShoppingListService();
+            RefreshUserList();
+        }
+
+        private void BtnAddUser_Click(object sender, RoutedEventArgs e)
+        {
+            string username = txtUsername.Text;
+            string email = txtEmail.Text;
+
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(email))
+            {
+                MessageBox.Show("Wypełnij wszystkie pola.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                _userService.AddUser(username, email);
+                MessageBox.Show("Użytkownik dodany!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                RefreshUserList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        
+        private void BtnRefreshList_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshUserList();
+        }
+
+        
+        private void RefreshUserList()
+        {
+            lstUsers.Items.Clear();
+            var users = _userService.GetUsers();
+
+            foreach (var u in users)
+            {
+                lstUsers.Items.Add($"{u.IdUzytkownika}: {u.NazwaUzytkownika} ({u.Email})");
+            }
+        }
+
+        
+        private void LstUsers_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (lstUsers.SelectedItem == null) return;
+
+            var selectedItem = lstUsers.SelectedItem.ToString();
+            string[] parts = selectedItem.Split(':');
+            if (parts.Length > 1 && int.TryParse(parts[0], out int userId))
+            {
+                _selectedUserId = userId;
+                RefreshShoppingLists();
+            }
+        }
+
+        
+        private void BtnAddShoppingList_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedUserId == 0)
+            {
+                MessageBox.Show("Wybierz pierwsze użytkownika.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            string listName = txtShoppingListName.Text;
+            if (string.IsNullOrWhiteSpace(listName))
+            {
+                MessageBox.Show("Podaj nazwę listy zakupów.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                _shoppingListService.AddShoppingList(_selectedUserId, listName);
+                MessageBox.Show("Lista zakupów dodana!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                RefreshShoppingLists();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        
+        private void RefreshShoppingLists()
+        {
+            lstShoppingLists.Items.Clear();
+            var shoppingLists = _shoppingListService.GetShoppingLists(_selectedUserId);
+
+            foreach (var list in shoppingLists)
+            {
+                lstShoppingLists.Items.Add($"{list.IdListy}: {list.NazwaListy}");
+            }
         }
 
     }
