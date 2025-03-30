@@ -17,26 +17,26 @@ namespace ListaZakupow
         
         public void AddShoppingList(int userId, string listName)
         {
-            var user = _context.Uzytkownicy.FirstOrDefault(u => u.IdUzytkownika == userId);
+            var user = _context.Users.FirstOrDefault(u => u.IdUzytkownika == userId);
             if (user == null)
             {
                 throw new Exception("User not found.");
             }
 
-            var shoppingList = new ListyZakupow
+            var shoppingList = new ShoppingList
             {
                 IdUzytkownika = userId,
                 NazwaListy = listName
             };
 
-            _context.ListyZakupow.Add(shoppingList);
+            _context.ShoppingLists.Add(shoppingList);
             _context.SaveChanges();
         }
 
         
-        public List<ListyZakupow> GetShoppingLists(int userId)
+        public List<ShoppingList> GetShoppingLists(int userId)
         {
-            return _context.ListyZakupow.Where(l => l.IdUzytkownika == userId).ToList();
+            return _context.ShoppingLists.Where(l => l.IdUzytkownika == userId).ToList();
         }
     }
 }

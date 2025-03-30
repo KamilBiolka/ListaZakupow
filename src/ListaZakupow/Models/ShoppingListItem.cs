@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ListaZakupow.Models;
 
-public partial class PozycjeListyZakupow
+public partial class ShoppingListItem
 {
     public int IdPozycji { get; set; }
 
@@ -13,7 +13,7 @@ public partial class PozycjeListyZakupow
 
     public int? Ilosc { get; set; }
 
-    public virtual ListyZakupow IdListyNavigation { get; set; } = null!;
+    public virtual ShoppingList IdListyNavigation { get; set; } = null!;
 
-    public virtual Produkty IdProduktuNavigation { get; set; } = null!;
+    public virtual Product IdProduktuNavigation { get; set; } = null!;
 }

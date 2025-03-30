@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ListaZakupow.Models;
 
-public partial class Produkty
+public partial class Product
 {
     public int IdProduktu { get; set; }
 
@@ -13,5 +13,5 @@ public partial class Produkty
 
     public decimal? Cena { get; set; }
 
-    public virtual ICollection<PozycjeListyZakupow> PozycjeListyZakupows { get; set; } = new List<PozycjeListyZakupow>();
+    public virtual ICollection<ShoppingListItem> ShoppingListItems { get; set; } = new List<ShoppingListItem>();
 }

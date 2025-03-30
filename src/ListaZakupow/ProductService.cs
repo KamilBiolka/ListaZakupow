@@ -16,20 +16,20 @@ namespace ListaZakupow
 
         public void AddProduct(string nazwa, string kategoria, decimal cena)
         {
-            var produkt = new Produkty
+            var produkt = new Product
             {
                 NazwaProduktu = nazwa,
                 Kategoria = kategoria,
                 Cena = cena
             };
 
-            _context.Produkty.Add(produkt);
+            _context.Products.Add(produkt);
             _context.SaveChanges();
         }
 
-        public List<Produkty> GetProducts()
+        public List<Product> GetProducts()
         {
-            return _context.Produkty.ToList();
+            return _context.Products.ToList();
         }
     }
 }

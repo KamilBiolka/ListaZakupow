@@ -17,26 +17,26 @@ namespace ListaZakupow
         
         public void AddUser(string nazwa, string email)
         {
-            var user = new Uzytkownicy
+            var user = new User
             {
                 NazwaUzytkownika = nazwa,
                 Email = email
             };
 
-            _context.Uzytkownicy.Add(user);
+            _context.Users.Add(user);
             _context.SaveChanges();  
         }
 
         
-        public List<Uzytkownicy> GetUsers()
+        public List<User> GetUsers()
         {
-            return _context.Uzytkownicy.ToList();
+            return _context.Users.ToList();
         }
 
         
-        public Uzytkownicy? GetUserById(int id)
+        public User GetUserById(int id)
         {
-            return _context.Uzytkownicy.FirstOrDefault(u => u.IdUzytkownika == id);
+            return _context.Users.FirstOrDefault(u => u.IdUzytkownika == id);
         }
     }
 }
