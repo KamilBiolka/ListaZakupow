@@ -1,4 +1,5 @@
 ﻿using ListaZakupow.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,18 @@ namespace ListaZakupow
         public List<ShoppingList> GetShoppingLists(int userId)
         {
             return _context.ShoppingLists.Where(l => l.IdUzytkownika == userId).ToList();
+        }
+
+        public List<Product> GetProductsByShoppingListId(int shoppingListId)
+        {
+           
+            var shoppingListItems = _context.ShoppingListItems
+                .Where(item => item.IdListy == shoppingListId)
+                .Include(item => item.IdProduktuNavigation) 
+                .ToList();
+
+            
+            return shoppingListItems.Select(item => item.IdProduktuNavigation).ToList();
         }
     }
 }

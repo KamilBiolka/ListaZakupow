@@ -17,14 +17,20 @@ namespace ListaZakupow
     {
         private readonly UserService _userService;
         private readonly ShoppingListService _shoppingListService;
+        private readonly ProductService _productService;
         private int _selectedUserId;
+        private int _selectedShoppingListId;
+
 
         public MainWindow()
         {
             InitializeComponent();
             _userService = new UserService();
             _shoppingListService = new ShoppingListService();
+            _productService = new ProductService();
             RefreshUserList();
+            LoadProducts();
+            
         }
 
         private void BtnAddUser_Click(object sender, RoutedEventArgs e)
@@ -68,7 +74,7 @@ namespace ListaZakupow
             }
         }
 
-        
+
         private void LstUsers_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             if (lstUsers.SelectedItem == null) return;
@@ -78,11 +84,11 @@ namespace ListaZakupow
             if (parts.Length > 1 && int.TryParse(parts[0], out int userId))
             {
                 _selectedUserId = userId;
-                RefreshShoppingLists();
+                RefreshShoppingLists(); 
             }
         }
 
-        
+
         private void BtnAddShoppingList_Click(object sender, RoutedEventArgs e)
         {
             if (_selectedUserId == 0)
@@ -110,15 +116,68 @@ namespace ListaZakupow
             }
         }
 
-        
+
         private void RefreshShoppingLists()
         {
+            if (_selectedUserId == 0)
+            {
+                MessageBox.Show("Wybierz użytkownika.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             lstShoppingLists.Items.Clear();
             var shoppingLists = _shoppingListService.GetShoppingLists(_selectedUserId);
 
             foreach (var list in shoppingLists)
             {
                 lstShoppingLists.Items.Add($"{list.IdListy}: {list.NazwaListy}");
+            }
+        }
+
+        
+
+        private void BtnAddProducts_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedUserId == 0)
+            {
+                MessageBox.Show("Wybierz użytkownika i listę.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (lstShoppingLists.SelectedItem != null)
+            {
+                var selectedShoppingList = lstShoppingLists.SelectedItem.ToString();
+                string[] parts = selectedShoppingList.Split(':');
+                if (parts.Length > 1 && int.TryParse(parts[0], out int shoppingListId))
+                {
+                    var addProductWindow = new AddProductWindow(shoppingListId);
+                    addProductWindow.Show();
+                    
+
+                }
+            }
+            
+        }
+
+        private void LoadProducts()
+        {
+            try
+            {
+                
+                var products = _productService.GetProducts();
+
+                if (products != null && products.Count > 0)
+                {
+                    lvProducts.ItemsSource = products; 
+                }
+                else
+                {
+                    MessageBox.Show("Brak produktów w bazie danych.", "Brak produktów", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Błąd: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

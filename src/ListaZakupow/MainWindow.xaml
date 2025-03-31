@@ -5,51 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ListaZakupow"
         mc:Ignorable="d"
-        Title="Lista Zakupów" Height="800" Width="800">
+        Title="Lista Zakupów" Height="520" Width="600">
     <Grid>
-		<StackPanel Margin="20">
+        <TabControl>
+            
+            <TabItem Header="Dodaj Użytkownika">
+                <StackPanel>
+                    <TextBox Name="txtUsername" Width="200" Margin="10" Text="Nazwa użytkownika" />
+                    <TextBox Name="txtEmail" Width="200" Margin="10" Text="Email" />
+                    <Button Name="BtnAddUser" Content="Dodaj Użytkownika" Width="200" Margin="10" Click="BtnAddUser_Click" />
+                    
+                    
+                </StackPanel>
+            </TabItem>
 
-			
-			<TextBlock Text="Lista Zakupów" FontSize="24" FontWeight="Bold"
-                       Foreground="#333" HorizontalAlignment="Center" Margin="0,10,0,20"/>
+            
+            <TabItem Header="Stwórz Listę Zakupów">
+                <StackPanel>
+                    <ListBox Name="lstUsers" Width="300" Height="150" Margin="10" SelectionChanged="LstUsers_SelectionChanged"/>
+                    <TextBox Name="txtShoppingListName" Width="200" Margin="10" Text="Nazwa Listy" />
+                    <Button Content="Dodaj Listę Zakupów" Width="200" Margin="10" Click="BtnAddShoppingList_Click"/>
+                    <ListBox Name="lstShoppingLists" Width="300" Height="150" Margin="10"/>
+                    <Button Content="Dodaj Produkty do Listy" Width="200" Margin="10" Click="BtnAddProducts_Click"/>
+                </StackPanel>
+            </TabItem>
 
-			
-			<Border BorderThickness="1" BorderBrush="Gray" Padding="10" CornerRadius="5" Background="White">
-				<StackPanel>
-					<TextBlock Text="Dodaj użytkownika" FontSize="18" FontWeight="Bold" Foreground="#B824E0"/>
-					<TextBlock Text="Nazwa:" Margin="0,10,0,0"/>
-					<TextBox x:Name="txtUsername" Width="250" Height="30"/>
+            <TabItem Header="Produkty">
+                <ListView x:Name="lvProducts" Margin="10">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="ID Produktu" DisplayMemberBinding="{Binding IdProduktu}" />
+                            <GridViewColumn Header="Nazwa produktu" DisplayMemberBinding="{Binding NazwaProduktu}" />
+                            <GridViewColumn Header="Cena" DisplayMemberBinding="{Binding Cena}" />
+                            <GridViewColumn Header="Kategoria" DisplayMemberBinding="{Binding Kategoria}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>
 
-					<TextBlock Text="Email:" Margin="0,10,0,0"/>
-					<TextBox x:Name="txtEmail" Width="250" Height="30"/>
-
-					<Button Content="Dodaj" Width="150" Height="35" Background="#B824E0" Foreground="White"
-                            Margin="0,10,0,0" Click="BtnAddUser_Click"/>
-				</StackPanel>
-			</Border>
-
-			
-			<TextBlock Text="Użytkownicy" FontSize="16" FontWeight="Bold" Margin="0,20,0,5"/>
-			<ListBox x:Name="lstUsers" Width="300" Height="100" Background="White" SelectionChanged="LstUsers_SelectionChanged"/>
-			<Button Content="Odśwież" Width="150" Height="35" Background="#B824E0" Foreground="White"
-                    Margin="0,10,0,0" Click="BtnRefreshList_Click"/>
-
-			
-			<Border BorderThickness="1" BorderBrush="Gray" Padding="10" CornerRadius="5" Background="White" Margin="0,20,0,0">
-				<StackPanel>
-					<TextBlock Text="Stwórz listę" FontSize="18" FontWeight="Bold" Foreground="#B824E0"/>
-
-					<TextBlock Text="Nazwa listy:" Margin="0,10,0,0"/>
-					<TextBox x:Name="txtShoppingListName" Width="250" Height="30"/>
-
-					<Button Content="Dodaj" Width="170" Height="35" Background="#B824E0" Foreground="White"
-                            Margin="0,10,0,0" Click="BtnAddShoppingList_Click"/>
-				</StackPanel>
-			</Border>
-
-			
-			<TextBlock Text="Listy" FontSize="16" FontWeight="Bold" Margin="0,20,0,5"/>
-			<ListBox x:Name="lstShoppingLists" Width="300" Height="100" Background="White"/>
-		</StackPanel>
+        </TabControl>
     </Grid>
 </Window>

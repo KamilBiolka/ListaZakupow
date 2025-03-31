@@ -7,7 +7,7 @@ public partial class ShoppingList
 {
     public int IdListy { get; set; }
 
-    public int IdUzytkownika { get; set; }
+    public int IdUzytkownika { get; set; } 
 
     public string NazwaListy { get; set; } = null!;
 

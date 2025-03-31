@@ -14,22 +14,44 @@ namespace ListaZakupow
             _context = new ShoppingListContext();
         }
 
-        public void AddProduct(string nazwa, string kategoria, decimal cena)
+        public void AddProduct(string productName, string productCategory, decimal price, int shoppingListId)
         {
-            var produkt = new Product
+            
+            var shoppingList = _context.ShoppingLists.FirstOrDefault(sl => sl.IdListy == shoppingListId);
+            if (shoppingList == null)
             {
-                NazwaProduktu = nazwa,
-                Kategoria = kategoria,
-                Cena = cena
+                throw new Exception("Lista zakupów nie istnieje.");
+            }
+
+            var product = new Product
+            {
+                NazwaProduktu = productName,
+                Kategoria = productCategory,
+                Cena = price
             };
 
-            _context.Products.Add(produkt);
-            _context.SaveChanges();
+            _context.Products.Add(product);
+            _context.SaveChanges(); 
+
+            var shoppingListItem = new ShoppingListItem
+            {
+                IdListy = shoppingListId,
+                IdProduktu = product.IdProduktu
+            };
+
+            _context.ShoppingListItems.Add(shoppingListItem); 
+            _context.SaveChanges(); 
         }
 
         public List<Product> GetProducts()
         {
+            
             return _context.Products.ToList();
+        }
+
+        internal void AddProduct(string productName, decimal price, int selectedShoppingListId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
