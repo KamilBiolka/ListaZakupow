@@ -151,8 +151,11 @@ namespace ListaZakupow
                 if (parts.Length > 1 && int.TryParse(parts[0], out int shoppingListId))
                 {
                     var addProductWindow = new AddProductWindow(shoppingListId);
-                    addProductWindow.Show();
-                    
+                    addProductWindow.ShowDialog();
+                    if (addProductWindow.IsProductAdded)
+                    {
+                        LoadProducts(); 
+                    }
 
                 }
             }

@@ -19,7 +19,7 @@ namespace ListaZakupow
             _selectedShoppingListId = shoppingListId;
             
         }
-
+        public bool IsProductAdded { get; private set; } = false;
 
         private void BtnAddProduct_Click(object sender, RoutedEventArgs e)
         {
@@ -58,6 +58,8 @@ namespace ListaZakupow
             {
                 MessageBox.Show($"Błąd: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            IsProductAdded = true;
+            this.Close();
         }
     }
 }
