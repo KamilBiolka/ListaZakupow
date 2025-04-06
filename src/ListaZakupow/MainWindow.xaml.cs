@@ -19,7 +19,7 @@ namespace ListaZakupow
         private readonly ShoppingListService _shoppingListService;
         private readonly ProductService _productService;
         private int _selectedUserId;
-        private int _selectedShoppingListId;
+        
 
 
         public MainWindow()

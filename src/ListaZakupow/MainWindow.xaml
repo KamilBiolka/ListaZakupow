@@ -5,44 +5,142 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ListaZakupow"
         mc:Ignorable="d"
-        Title="Lista Zakupów" Height="520" Width="600">
-    <Grid>
-        <TabControl>
-            
-            <TabItem Header="Dodaj Użytkownika">
-                <StackPanel>
-                    <TextBox Name="txtUsername" Width="200" Margin="10" Text="Nazwa użytkownika" />
-                    <TextBox Name="txtEmail" Width="200" Margin="10" Text="Email" />
-                    <Button Name="BtnAddUser" Content="Dodaj Użytkownika" Width="200" Margin="10" Click="BtnAddUser_Click" />
-                    
-                    
-                </StackPanel>
-            </TabItem>
+        Title="Lista Zakupów" Height="650" Width="600">
 
-            
-            <TabItem Header="Stwórz Listę Zakupów">
-                <StackPanel>
-                    <ListBox Name="lstUsers" Width="300" Height="150" Margin="10" SelectionChanged="LstUsers_SelectionChanged"/>
-                    <TextBox Name="txtShoppingListName" Width="200" Margin="10" Text="Nazwa Listy" />
-                    <Button Content="Dodaj Listę Zakupów" Width="200" Margin="10" Click="BtnAddShoppingList_Click"/>
-                    <ListBox Name="lstShoppingLists" Width="300" Height="150" Margin="10"/>
-                    <Button Content="Dodaj Produkty do Listy" Width="200" Margin="10" Click="BtnAddProducts_Click"/>
-                </StackPanel>
-            </TabItem>
+	<Window.Resources>
+		
+		<FontFamily x:Key="AppFont">Segoe UI</FontFamily>
 
-            <TabItem Header="Produkty">
-                <ListView x:Name="lvProducts" Margin="10">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="ID Produktu" DisplayMemberBinding="{Binding IdProduktu}" />
-                            <GridViewColumn Header="Nazwa produktu" DisplayMemberBinding="{Binding NazwaProduktu}" />
-                            <GridViewColumn Header="Cena" DisplayMemberBinding="{Binding Cena}" />
-                            <GridViewColumn Header="Kategoria" DisplayMemberBinding="{Binding Kategoria}" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </TabItem>
+		
+		<Style TargetType="TextBox">
+			<Setter Property="FontFamily" Value="{StaticResource AppFont}" />
+			<Setter Property="FontSize" Value="14" />
+			<Setter Property="Padding" Value="12,10" />
+			<Setter Property="Margin" Value="10" />
+			<Setter Property="Height" Value="40" />
+			<Setter Property="Background" Value="#F0F0F0" />
+			<Setter Property="BorderBrush" Value="#B0B0B0" />
+			<Setter Property="BorderThickness" Value="1" />
+			
+			<Setter Property="VerticalContentAlignment" Value="Center" />
+			<Setter Property="Foreground" Value="#424242" />
+		</Style>
 
-        </TabControl>
-    </Grid>
+		
+		<Style TargetType="Button">
+			<Setter Property="FontFamily" Value="{StaticResource AppFont}" />
+			<Setter Property="FontSize" Value="16" />
+			<Setter Property="Padding" Value="15,10" />
+			<Setter Property="Margin" Value="10" />
+			<Setter Property="Height" Value="45" />
+			<Setter Property="Background">
+				<Setter.Value>
+					<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+						<GradientStop Color="#4CAF50" Offset="0.0"/>
+						<GradientStop Color="#388E3C" Offset="1.0"/>
+					</LinearGradientBrush>
+				</Setter.Value>
+			</Setter>
+			<Setter Property="Foreground" Value="White" />
+			<Setter Property="BorderBrush" Value="#388E3C" />
+			<Setter Property="BorderThickness" Value="1" />
+			
+			<Setter Property="Effect">
+				<Setter.Value>
+					<DropShadowEffect Color="Black" Direction="270" ShadowDepth="4" Opacity="0.3" />
+				</Setter.Value>
+			</Setter>
+			<Style.Triggers>
+				<Trigger Property="IsMouseOver" Value="True">
+					<Setter Property="Background">
+						<Setter.Value>
+							<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+								<GradientStop Color="#45A049" Offset="0.0"/>
+								<GradientStop Color="#2C6B2F" Offset="1.0"/>
+							</LinearGradientBrush>
+						</Setter.Value>
+					</Setter>
+					<Setter Property="Cursor" Value="Hand" />
+				</Trigger>
+				<Trigger Property="IsPressed" Value="True">
+					<Setter Property="Background">
+						<Setter.Value>
+							<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+								<GradientStop Color="#388E3C" Offset="0.0"/>
+								<GradientStop Color="#2C6B2F" Offset="1.0"/>
+							</LinearGradientBrush>
+						</Setter.Value>
+					</Setter>
+				</Trigger>
+			</Style.Triggers>
+		</Style>
+
+		
+		<Style TargetType="TabControl">
+			<Setter Property="Background" Value="Transparent"/>
+		</Style>
+
+		
+		<Style TargetType="TabItem">
+			<Setter Property="FontFamily" Value="{StaticResource AppFont}" />
+			<Setter Property="FontSize" Value="16" />
+			<Setter Property="Padding" Value="12" />
+			<Setter Property="Foreground" Value="#424242" />
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="BorderBrush" Value="Transparent" />
+			<Setter Property="BorderThickness" Value="0" />
+			
+			<Setter Property="FocusVisualStyle" Value="{x:Null}" />
+		</Style>
+
+		
+		<Style TargetType="ListBox">
+			<Setter Property="FontFamily" Value="{StaticResource AppFont}" />
+			<Setter Property="FontSize" Value="14" />
+			<Setter Property="Padding" Value="10" />
+			<Setter Property="Margin" Value="10" />
+			<Setter Property="Background" Value="#F9F9F9" />
+			<Setter Property="BorderBrush" Value="#BDBDBD" />
+			<Setter Property="BorderThickness" Value="1" />
+			
+		</Style>
+	</Window.Resources>
+
+	<Grid Background="#FAFAFA">
+		<TabControl Margin="10">
+			
+			<TabItem Header="Dodaj Użytkownika">
+				<StackPanel>
+					<TextBox Name="txtUsername" Width="250" Text="Nazwa użytkownika" />
+					<TextBox Name="txtEmail" Width="250" Text="Email" />
+					<Button Name="BtnAddUser" Content="Dodaj Użytkownika" Width="250" Click="BtnAddUser_Click" />
+				</StackPanel>
+			</TabItem>
+
+			
+			<TabItem Header="Stwórz Listę Zakupów">
+				<StackPanel>
+					<ListBox Name="lstUsers" Width="300" Height="150" Margin="10" SelectionChanged="LstUsers_SelectionChanged"/>
+					<TextBox Name="txtShoppingListName" Width="250" Text="Nazwa Listy" />
+					<Button Content="Dodaj Listę Zakupów" Width="250" Click="BtnAddShoppingList_Click"/>
+					<ListBox Name="lstShoppingLists" Width="300" Height="150" Margin="10"/>
+					<Button Content="Dodaj Produkty do Listy" Width="250" Click="BtnAddProducts_Click"/>
+				</StackPanel>
+			</TabItem>
+
+			
+			<TabItem Header="Produkty">
+				<ListView x:Name="lvProducts" Margin="10">
+					<ListView.View>
+						<GridView>
+							<GridViewColumn Header="ID Produktu" DisplayMemberBinding="{Binding IdProduktu}" />
+							<GridViewColumn Header="Nazwa produktu" DisplayMemberBinding="{Binding NazwaProduktu}" />
+							<GridViewColumn Header="Cena" DisplayMemberBinding="{Binding Cena}" />
+							<GridViewColumn Header="Kategoria" DisplayMemberBinding="{Binding Kategoria}" />
+						</GridView>
+					</ListView.View>
+				</ListView>
+			</TabItem>
+		</TabControl>
+	</Grid>
 </Window>
